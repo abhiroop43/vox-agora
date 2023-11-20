@@ -19,7 +19,7 @@ interface ServerHeaderProps {
 }
 
 const ServerHeader = ({ server, role }: ServerHeaderProps) => {
-  const {onOpen} = useModal();
+  const { onOpen } = useModal();
 
   const isAdmin = role === MembeRole.ADMIN;
   const isModerator = isAdmin || role === MembeRole.MODERATOR;
@@ -43,7 +43,7 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         )}
 
         {isAdmin && (
-          <DropdownMenuItem className="px-3 py-2 cursor-pointer">
+          <DropdownMenuItem onClick={() => onOpen('editServer', { server })} className="px-3 py-2 cursor-pointer">
             Server Settings <Settings className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}

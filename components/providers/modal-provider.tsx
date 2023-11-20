@@ -3,6 +3,7 @@
 import CreateServerModal from '@/components/modals/create-server-modal';
 import { useEffect, useState } from 'react';
 import InviteModal from '@/components/modals/invite-modal';
+import EditServerModal from '@/components/modals/edit-server-modal';
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -19,6 +20,7 @@ const ModalProvider = () => {
     <>
       <CreateServerModal />
       <InviteModal />
+      <EditServerModal />
     </>
   );
 };
