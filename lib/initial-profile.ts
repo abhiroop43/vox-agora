@@ -3,7 +3,6 @@ import { db } from '@/lib/db';
 
 const initialProfile = async () => {
   const user = await currentUser();
-
   if (!user) {
     return redirectToSignIn();
   }
