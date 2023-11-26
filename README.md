@@ -12,13 +12,15 @@ VoxAgora is a platform for real-time chat, voice, and video conferences. The nam
 ## Technologies Used 💻
 
 - [Next.js](https://nextjs.org/) - The React framework for server-rendered React applications.
+- [shadcn/ui](https://ui.shadcn.com/) - The UI Library used for the frontend.
 - [Clerk](https://clerk.com/) - For Authentication and User Management.
 - [Prisma](https://www.prisma.io/) - ORM to work with the database.
-- [Azure MySQL](https://azure.microsoft.com/en-in/products/mysql) - The database provider for the application.
+- [MySQL](https://www.mysql.com/) - The database provider for the application.
+- [uploadthing](https://uploadthing.com/) - For handling file and image uploads
 
-## Getting Started
+## Getting Started 🛠️
 
-To get started with Vox Agora, follow these steps:
+In order to setup a development environment for Vox Agora, follow these steps:
 
 1. **Clone the Repository:**
 
@@ -31,11 +33,24 @@ To get started with Vox Agora, follow these steps:
     ```bash
     npm install
 
-3. **Run the development server:**
+3. **Create a .env file in the root of your project directory with your own values**
+
+    ```env
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+    CLERK_SECRET_KEY=
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+    NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+    DATABASE_URL=
+    UPLOADTHING_SECRET=
+    UPLOADTHING_APP_ID=
+    ```
+
+4. **Run the development server:**
 
     ```bash
     npm run dev
-
 
 5. **Open Vox Agora in your browser**
 
