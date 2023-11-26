@@ -12,7 +12,9 @@ VoxAgora is a platform for real-time chat, voice, and video conferences. The nam
 ## Technologies Used 💻
 
 - [Next.js](https://nextjs.org/) - The React framework for server-rendered React applications.
-- [Your Other Technologies Here...]
+- [Clerk](https://clerk.com/) - For Authentication and User Management.
+- [Prisma](https://www.prisma.io/) - ORM to work with the database.
+- [Azure MySQL](https://azure.microsoft.com/en-in/products/mysql) - The database provider for the application.
 
 ## Getting Started
 
@@ -21,20 +23,15 @@ To get started with Vox Agora, follow these steps:
 1. **Clone the Repository:**
 
     ```bash
-    git clone https://github.com/your-username/VoxAgora.git
-    cd VoxAgora
+    git clone https://github.com/abhiroop43/vox-agora
+    cd vox-agora
 
-2. **Clone the Repository:**
-
-    ```bash
-    git clone https://github.com/your-username/VoxAgora.git
-
-3. **Install dependencies:**
+2. **Install dependencies:**
 
     ```bash
     npm install
 
-4. **Run the development server:**
+3. **Run the development server:**
 
     ```bash
     npm run dev
