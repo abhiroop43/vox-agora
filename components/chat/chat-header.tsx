@@ -1,3 +1,5 @@
+"use client";
+
 import { Hash } from "lucide-react";
 
 import React from "react";
