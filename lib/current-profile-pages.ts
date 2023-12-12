@@ -2,7 +2,7 @@ import { getAuth } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 import { NextApiRequest } from "next";
 
-const currentProfile = async (req: NextApiRequest) => {
+const currentProfilePages = async (req: NextApiRequest) => {
   const { userId } = getAuth(req);
 
   if (!userId) {
@@ -14,4 +14,4 @@ const currentProfile = async (req: NextApiRequest) => {
   });
 };
 
-export default currentProfile;
+export default currentProfilePages;
