@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 import {
   Dialog,
   DialogContent,
@@ -11,48 +11,54 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import FileUpload from '@/components/file-upload';
-import { useRouter } from 'next/navigation';
-import { useModal } from '@/hooks/use-modal-store';
-import { useEffect } from 'react';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import FileUpload from "@/components/file-upload";
+import { useRouter } from "next/navigation";
+import { useModal } from "@/hooks/use-modal-store";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, { message: 'Please enter a server name.' })
-    .max(100, { message: 'Server name is too long.' }),
+    .min(1, { message: "Please enter a server name." })
+    .max(100, { message: "Server name is too long." }),
   imageUrl: z
     .string()
     .trim()
-    .min(1, { message: 'Please enter a server icon URL.' })
-    .max(100, { message: 'Server icon URL is too long.' }),
+    .min(1, { message: "Please enter a server icon URL." }),
 });
 
 const EditServerModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
 
-  const isModalOpen = isOpen && type === 'editServer';
+  const isModalOpen = isOpen && type === "editServer";
   const { server } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      imageUrl: '',
+      name: "",
+      imageUrl: "",
     },
   });
 
   useEffect(() => {
     if (server) {
-      form.setValue('name', server.name);
-      form.setValue('imageUrl', server.imageUrl);
+      form.setValue("name", server.name);
+      form.setValue("imageUrl", server.imageUrl);
     }
   }, [server, form]);
 
@@ -79,9 +85,12 @@ const EditServerModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">Create your new server</DialogTitle>
+          <DialogTitle className="text-2xl text-center font-bold">
+            Create your new server
+          </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Give your server a personality with a name and an icon. You can always change it later.
+            Give your server a personality with a name and an icon. You can
+            always change it later.
           </DialogDescription>
         </DialogHeader>
 
@@ -95,7 +104,11 @@ const EditServerModal = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <FileUpload endpoint="serverImage" value={field.value} onChange={field.onChange} />
+                        <FileUpload
+                          endpoint="serverImage"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                     </FormItem>
                   )}

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 import {
   Dialog,
   DialogContent,
@@ -12,25 +12,31 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import FileUpload from '@/components/file-upload';
-import { useRouter } from 'next/navigation';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import FileUpload from "@/components/file-upload";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, { message: 'Please enter a server name.' })
-    .max(100, { message: 'Server name is too long.' }),
+    .min(1, { message: "Please enter a server name." })
+    .max(100, { message: "Server name is too long." }),
   imageUrl: z
     .string()
     .trim()
-    .min(1, { message: 'Please enter a server icon URL.' })
-    .max(100, { message: 'Server icon URL is too long.' }),
+    .min(1, { message: "Please enter a server icon URL." }),
 });
 
 const InitialModal = () => {
@@ -45,8 +51,8 @@ const InitialModal = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      imageUrl: '',
+      name: "",
+      imageUrl: "",
     },
   });
 
@@ -54,12 +60,11 @@ const InitialModal = () => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
-      await axios.post('/api/servers', data);
+      await axios.post("/api/servers", data);
 
       form.reset();
       router.refresh();
       window.location.reload();
-      
     } catch (error) {
       console.error(error);
     }
@@ -73,9 +78,12 @@ const InitialModal = () => {
     <Dialog open>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">Create your new server</DialogTitle>
+          <DialogTitle className="text-2xl text-center font-bold">
+            Create your new server
+          </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Give your server a personality with a name and an icon. You can always change it later.
+            Give your server a personality with a name and an icon. You can
+            always change it later.
           </DialogDescription>
         </DialogHeader>
 
@@ -89,7 +97,11 @@ const InitialModal = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <FileUpload endpoint="serverImage" value={field.value} onChange={field.onChange} />
+                        <FileUpload
+                          endpoint="serverImage"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
