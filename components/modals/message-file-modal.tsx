@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import axios from "axios";
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
 import {
   Dialog,
   DialogContent,
@@ -11,30 +11,30 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import FileUpload from "@/components/file-upload";
-import { useRouter } from "next/navigation";
-import { useModal } from "@/hooks/use-modal-store";
-import qs from "query-string";
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import FileUpload from '@/components/file-upload';
+import { useRouter } from 'next/navigation';
+import { useModal } from '@/hooks/use-modal-store';
+import qs from 'query-string';
 
 const formSchema = z.object({
-  fileUrl: z.string().trim().min(1, { message: "Attachment is required." }),
+  fileUrl: z.string().trim().min(1, { message: 'Attachment is required.' }),
 });
 
 const MessageFileModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
 
-  const isModalOpen = isOpen && type === "messageFile";
+  const isModalOpen = isOpen && type === 'messageFile';
   const { apiUrl, query } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fileUrl: "",
+      fileUrl: '',
     },
   });
 
@@ -48,11 +48,11 @@ const MessageFileModal = () => {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: apiUrl || "",
+        url: apiUrl || '',
         query,
       });
-
-      await axios.post(url, { ...data, content: data.fileUrl });
+      console.log({ ...data, content: sessionStorage.getItem('fileName'), fileUrl: data.fileUrl });
+      await axios.post(url, { ...data, content: sessionStorage.getItem('fileName'), fileUrl: data.fileUrl });
 
       form.reset();
       router.refresh();
@@ -66,12 +66,8 @@ const MessageFileModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handeClose}>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">
-            Add an attachment
-          </DialogTitle>
-          <DialogDescription className="text-center text-zinc-500">
-            Send a file as a message
-          </DialogDescription>
+          <DialogTitle className="text-2xl text-center font-bold">Add an attachment</DialogTitle>
+          <DialogDescription className="text-center text-zinc-500">Send a file as a message</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -84,11 +80,7 @@ const MessageFileModal = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <FileUpload
-                          endpoint="messageFile"
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
+                        <FileUpload endpoint="messageFile" value={field.value} onChange={field.onChange} />
                       </FormControl>
                     </FormItem>
                   )}
