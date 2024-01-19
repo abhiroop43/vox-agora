@@ -154,7 +154,7 @@ const ChatItem = ({
                       <FormControl>
                         <div className="relative w-full">
                           <Input
-                            className="p-2 bg-zinc-200/90 dakr:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
+                            className="p-2 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
                             placeholder="Edited Message"
                             {...field}
                           />
@@ -163,7 +163,11 @@ const ChatItem = ({
                     </FormItem>
                   )}
                 />
+                <Button size="sm" variant="primary">
+                  Save
+                </Button>
               </form>
+              <span className="text-[10px] mt-1 text-zinc-400">Press Esc to cancel, Enter to save</span>
             </Form>
           )}
         </div>
