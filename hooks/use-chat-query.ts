@@ -1,21 +1,16 @@
-import qs from "query-string";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import qs from 'query-string';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { useSocket } from "@/components/providers/socket-provider";
+import { useSocket } from '@/components/providers/socket-provider';
 
 interface ChatQueryProps {
   queryKey: string;
   apiUrl: string;
-  paramKey: "channelId" | "conversationId";
+  paramKey: 'channelId' | 'conversationId';
   paramValue: string;
 }
 
-const useChatQuery = ({
-  queryKey,
-  apiUrl,
-  paramKey,
-  paramValue,
-}: ChatQueryProps) => {
+const useChatQuery = ({ queryKey, apiUrl, paramKey, paramValue }: ChatQueryProps) => {
   const { isConnected } = useSocket();
 
   const fetchMessages = async ({ pageParam = undefined }) => {
@@ -27,21 +22,20 @@ const useChatQuery = ({
           [paramKey]: paramValue,
         },
       },
-      { skipNull: true },
+      { skipNull: true }
     );
 
     const res = await fetch(url);
     return res.json();
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    useInfiniteQuery({
-      initialPageParam: undefined,
-      queryKey: [queryKey],
-      queryFn: fetchMessages,
-      refetchInterval: isConnected ? false : 1000,
-      getNextPageParam: (lastPage) => lastPage?.nextCursor,
-    });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useInfiniteQuery({
+    initialPageParam: undefined,
+    queryKey: [queryKey],
+    queryFn: fetchMessages,
+    refetchInterval: isConnected ? false : 1000,
+    getNextPageParam: (lastPage) => lastPage?.nextCursor,
+  });
 
   return {
     data,
