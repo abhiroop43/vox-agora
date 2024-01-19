@@ -56,7 +56,19 @@ const ChatItem = ({
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { onOpen } = useModal();
-  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        setIsEditing(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,8 +77,21 @@ const ChatItem = ({
     },
   });
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const isLoading = form.formState.isSubmitting;
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const url = qs.stringifyUrl({
+        url: `${socketUrl}/${id}`,
+        query: socketQuery,
+      });
+
+      await axios.patch(url, values);
+      form.reset();
+      setIsEditing(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -147,6 +172,7 @@ const ChatItem = ({
             <Form {...form}>
               <form className="flex items-center w-full gap-x-2 pt-2" onSubmit={form.handleSubmit(onSubmit)}>
                 <FormField
+                  disabled={isLoading}
                   control={form.control}
                   name="content"
                   render={({ field }) => (
@@ -163,7 +189,7 @@ const ChatItem = ({
                     </FormItem>
                   )}
                 />
-                <Button size="sm" variant="primary">
+                <Button disabled={isLoading} size="sm" variant="primary">
                   Save
                 </Button>
               </form>
