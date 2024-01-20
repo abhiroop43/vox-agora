@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import React, { Fragment } from "react";
-import { Member, Message, Profile } from "@prisma/client";
-import ChatWelcome from "@/components/chat/chat-welcome";
-import useChatQuery from "@/hooks/use-chat-query";
-import { Loader2, ServerCrash } from "lucide-react";
-import ChatItem from "@/components/chat/chat-item";
-import { format } from "date-fns";
+import React, { Fragment } from 'react';
+import { Member, Message, Profile } from '@prisma/client';
+import ChatWelcome from '@/components/chat/chat-welcome';
+import useChatQuery from '@/hooks/use-chat-query';
+import { Loader2, ServerCrash } from 'lucide-react';
+import ChatItem from '@/components/chat/chat-item';
+import { format } from 'date-fns';
+import { useChatSocket } from '@/hooks/use-chat-socket';
 
-const DATE_FORMAT = "d MMM yyyy, HH:mm";
+const DATE_FORMAT = 'd MMM yyyy, HH:mm';
 
 type MessageWithMemberWithProfile = Message & {
   member: Member & {
@@ -23,9 +24,9 @@ interface ChatMessagesProps {
   apiUrl: string;
   socketUrl: string;
   socketQuery: Record<string, string>;
-  paramKey: "channelId" | "conversationId";
+  paramKey: 'channelId' | 'conversationId';
   paramValue: string;
-  type: "channel" | "conversation";
+  type: 'channel' | 'conversation';
 }
 
 const ChatMessages = ({
@@ -40,31 +41,30 @@ const ChatMessages = ({
   type,
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatId}`;
+  const addKey = `chat:${chatId}:messages`;
+  const updateKey = `chat:${chatId}:messages:update`;
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    useChatQuery({
-      queryKey,
-      apiUrl,
-      paramKey,
-      paramValue,
-    });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useChatQuery({
+    queryKey,
+    apiUrl,
+    paramKey,
+    paramValue,
+  });
 
-  if (status === "pending") {
+  useChatSocket({ queryKey, addKey, updateKey });
+
+  if (status === 'pending') {
     return (
       <div className="flex flex-col justify-center items-center">
         <Loader2 className="h-7 w-7 text-zinc-500 animate-spin my-4" />
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          Loading messages 🤔
-        </p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">Loading messages 🤔</p>
       </div>
     );
-  } else if (status === "error") {
+  } else if (status === 'error') {
     return (
       <div className="flex flex-col justify-center items-center">
         <ServerCrash className="h-7 w-7 text-zinc-500 my-4" />
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          Something went wrong 😱
-        </p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">Something went wrong 😱</p>
       </div>
     );
   }
